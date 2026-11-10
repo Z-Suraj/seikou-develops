@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var _origFetch = window.fetch ? window.fetch.bind(window) : undefined;
+          var _fetch = _origFetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return _fetch;
+            },
+            set: function(val) {
+              _fetch = val;
+            },
+            configurable: true,
+            enumerable: true,
+          });
+        } catch (e) {
+          // Fallback if property definition is restricted
+        }
+      })();
+    </script>
+    <title>Seikou Develops | Real Estate Consultancy & Construction Solutions</title>
+    <meta
+      name="description"
+      content="Discover Seikou Develops — professional real estate consultancy, property brokerage, civil construction and turnkey solutions under one trusted roof."
+    />
+    <link rel="icon" type="image/png" href="/assets/seikou-logo.png" />
+    <link rel="apple-touch-icon" href="/assets/seikou-logo.png" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Seikou Develops" />
+    <meta property="og:title" content="Seikou Develops | Real Estate Consultancy & Construction Solutions" />
+    <meta
+      property="og:description"
+      content="Building Trust. Creating Futures. Comprehensive property consultancy, investment brokerage, civil construction and turnkey finishing since 2008."
+    />
+    <meta property="og:image" content="/assets/seikou-logo.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Seikou Develops | Real Estate Consultancy & Construction Solutions" />
+    <meta
+      name="twitter:description"
+      content="Discover Seikou Develops — professional real estate consultancy, property brokerage, civil construction and turnkey solutions under one trusted roof."
+    />
+    <meta name="twitter:image" content="/assets/seikou-logo.png" />
+
+    <!-- Google Fonts: Cinzel, Bodoni Moda, Space Grotesk, Manrope, Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "RealEstateAgent",
+          "@id": "https://seikoudevelops.com/#organization",
+          "name": "Seikou Develops",
+          "alternateName": "Seikou Develops Real Estate & Construction",
+          "description": "Professional real estate consultancy, brokerage, civil construction, and turnkey solutions. Legacy since 2008.",
+          "slogan": "Building Trust. Creating Futures.",
+          "email": "seikou.develops10@gmail.com",
+          "telephone": "+918670279597",
+          "sameAs": [
+            "https://www.instagram.com/seikou_develops/"
+          ],
+          "logo": {
+            "@type": "ImageObject",
+            "url": "/assets/seikou-logo.png"
+          },
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday"
+            ],
+            "opens": "09:00",
+            "closes": "19:00"
+          }
+        },
+        {
+          "@type": "GeneralContractor",
+          "name": "Seikou Develops Construction & Turnkey Solutions",
+          "description": "End-to-end civil construction, AutoCAD planning, fabrication, flooring, and turnkey delivery."
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-[#080808] text-white antialiased selection:bg-[#D4AF37] selection:text-[#080808] overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
