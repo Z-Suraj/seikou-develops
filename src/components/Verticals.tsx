@@ -70,7 +70,7 @@ export const Verticals: React.FC<VerticalsProps> = ({
             {/* Background Image Container */}
             <div className="relative h-72 sm:h-80 w-full overflow-hidden bg-[#050505]">
               <img
-                src="/src/assets/images/real_estate_luxury_property_1794335446043.jpg"
+                src="/assets/images/vertical_real_estate_1794425314696.jpg"
                 alt="Luxury Real Estate Consultancy and Brokerage"
                 className="w-full h-full object-cover object-center filter brightness-[0.8] contrast-[1.1] transition-transform duration-700 ease-out group-hover:scale-108"
                 referrerPolicy="no-referrer"
@@ -128,7 +128,7 @@ export const Verticals: React.FC<VerticalsProps> = ({
             {/* Background Image Container */}
             <div className="relative h-72 sm:h-80 w-full overflow-hidden bg-[#050505]">
               <img
-                src="/src/assets/images/civil_construction_engineering_1794335448396.jpg"
+                src="/assets/images/vertical_turnkey_civil_1794425315203.jpg"
                 alt="Turnkey Construction and Civil Engineering"
                 className="w-full h-full object-cover object-center filter brightness-[0.8] contrast-[1.1] transition-transform duration-700 ease-out group-hover:scale-108"
                 referrerPolicy="no-referrer"

@@ -18,8 +18,8 @@ export const About: React.FC<AboutProps> = ({ onLearnMore }) => {
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-lg overflow-hidden border border-[#D4AF37]/30 shadow-2xl group bg-[#101010]">
               <img
-                src="/src/assets/images/civil_construction_engineering_1794335448396.jpg"
-                alt="Seikou Develops Structural Engineering and Civil Site Execution"
+                src="/assets/images/about_corporate_architecture_1794425239207.jpg"
+                alt="Seikou Develops Corporate Headquarters & Architecture"
                 className="w-full h-[480px] sm:h-[560px] object-cover filter brightness-[0.85] contrast-[1.08] transition-transform duration-700 group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />

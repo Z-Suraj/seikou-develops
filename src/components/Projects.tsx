@@ -97,11 +97,11 @@ export const Projects: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Status Indicator */}
+                    {/* Engineering Scope Chip */}
                     <div className="absolute top-4 right-4 z-10">
-                      <span className="px-2.5 py-1 rounded-sm bg-[#080808]/90 font-space text-[10px] font-semibold text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5 backdrop-blur-md shadow-md">
-                        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                        <span>{project.completionStatus}</span>
+                      <span className="px-2.5 py-1 rounded-sm bg-[#080808]/90 font-space text-[10px] font-semibold text-[#D4AF37] border border-[#D4AF37]/30 flex items-center gap-1.5 backdrop-blur-md shadow-md">
+                        <Layers className="w-3 h-3 text-[#D4AF37]" />
+                        <span>{project.engineeringScope}</span>
                       </span>
                     </div>
                   </div>

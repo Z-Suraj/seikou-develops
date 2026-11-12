@@ -8,9 +8,12 @@ import Lenis from 'lenis';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Credibility } from './components/Credibility';
+import { Founder } from './components/Founder';
 import { About } from './components/About';
+import { AirportCollaboration } from './components/AirportCollaboration';
 import { Verticals } from './components/Verticals';
 import { RealEstateServices } from './components/RealEstateServices';
+import { PropertyPlatform } from './components/PropertyPlatform';
 import { ConstructionServices } from './components/ConstructionServices';
 import { Architectural3DViewer } from './components/Architectural3DViewer';
 import { Projects } from './components/Projects';
@@ -69,55 +72,66 @@ export default function App() {
       <main id="main-content">
         {/* Section 01: Hero with Cinematic Architectural Aerial Background Video */}
         <Hero
-          onExploreExpertise={() => scrollToSection('expertise')}
+          onExploreExpertise={() => scrollToSection('properties')}
           onDiscussProject={() => scrollToSection('contact')}
         />
 
-        {/* Section 02: Company Credibility */}
+        {/* Section 02: Company Credibility & Regional Focus */}
         <Credibility />
 
-        {/* Section 03: About Seikou Develops */}
-        <About onLearnMore={() => scrollToSection('expertise')} />
+        {/* Section 03: Executive Leadership — Sayan Mahanta */}
+        <Founder />
 
-        {/* Section 04: The Two Business Verticals */}
+        {/* Section 04: About Seikou Develops */}
+        <About onLearnMore={() => scrollToSection('properties')} />
+
+        {/* Section 05: Regional Infrastructure Collaboration — Durgapur Airport */}
+        <AirportCollaboration />
+
+        {/* Section 06: The Two Business Verticals */}
         <Verticals
           onSelectRealEstate={() => scrollToSection('real-estate')}
           onSelectConstruction={() => scrollToSection('construction')}
         />
 
-        {/* Section 05: Real Estate Services */}
+        {/* Section 07: Real Estate Services */}
         <RealEstateServices
           onOpenConsultation={() => scrollToSection('contact')}
           onWhatsAppInquiry={handleOpenWhatsAppRealEstate}
         />
 
-        {/* Section 06: Construction & Turnkey Solutions */}
+        {/* Section 08: West Bengal Property Platform (Bankura & Durgapur Focus) */}
+        <PropertyPlatform
+          onOpenConsultation={() => scrollToSection('contact')}
+        />
+
+        {/* Section 09: Construction & Turnkey Solutions (12 Services + Interior Showcase + Luxury Villa) */}
         <ConstructionServices
           onStartProject={() => scrollToSection('contact')}
         />
 
-        {/* Section 06-B: Interactive 3D Architectural Experience (Three.js) */}
+        {/* Section 10: Interactive 3D Architectural Experience (Three.js) */}
         <Architectural3DViewer />
 
-        {/* Section 07: Featured Projects Showcase */}
+        {/* Section 11: Featured Conceptual Portfolio */}
         <Projects />
 
-        {/* Section 08: Why Choose Seikou Develops */}
+        {/* Section 12: Why Choose Seikou Develops */}
         <WhyChooseUs />
 
-        {/* Section 09: Structured Work Process */}
+        {/* Section 13: Structured Work Process */}
         <Process />
 
-        {/* Section 10: Client Testimonials & Confidentiality Notice */}
+        {/* Section 14: Client Confidentiality & Advisory Notice */}
         <TestimonialsNotice />
 
-        {/* Section 11: Contact & Consultation (Dual Form with DPDP Consent Checkbox) */}
+        {/* Section 15: Contact & Consultation Form (West Bengal Territories) */}
         <Contact
           onOpenPrivacyPolicy={() => setActiveLegalDoc('privacy')}
         />
       </main>
 
-      {/* Section 12: Footer with Major Enlarged Logo & Complete Legal Navigation */}
+      {/* Section 16: Footer with Prominent Logo & Legal Directory */}
       <Footer
         onOpenAdmin={() => setIsAdminOpen(true)}
         onOpenLegalDoc={(id) => setActiveLegalDoc(id)}

@@ -9,7 +9,11 @@ import {
   AlertCircle,
   Building,
   Hammer,
-  ShieldCheck
+  ShieldCheck,
+  Copy,
+  Check,
+  ExternalLink,
+  RotateCcw
 } from 'lucide-react';
 import { submitRealEstateInquiry, submitConstructionInquiry } from '../lib/supabase';
 import { RealEstateInquiry, ConstructionInquiry } from '../types';
@@ -27,9 +31,9 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
     fullName: '',
     phone: '',
     email: '',
-    propertyCategory: 'Residential',
+    propertyCategory: 'Residential Properties',
     requirement: 'Buy',
-    preferredLocation: '',
+    preferredLocation: 'Bankura, West Bengal',
     budgetRange: '',
     message: '',
   });
@@ -58,11 +62,23 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
     message: '',
   });
 
+  // Prepared Email State for Real Estate Enquiry
+  const [preparedEnquiry, setPreparedEnquiry] = useState<{
+    recipient: string;
+    subject: string;
+    body: string;
+    mailtoUrl: string;
+    gmailUrl: string;
+    senderName: string;
+  } | null>(null);
+  const [copiedText, setCopiedText] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
   // Validation helpers
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePhone = (phone: string) => phone.replace(/[^0-9]/g, '').length >= 10;
 
-  const handleReSubmit = async (e: React.FormEvent) => {
+  const handleReSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!reData.fullName.trim()) {
       setReStatus({ type: 'error', message: 'Please provide your full name.' });
@@ -81,37 +97,117 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
       return;
     }
 
-    setIsSubmitting(true);
     setReStatus({ type: 'idle', message: '' });
 
+    const requirementLabels: Record<string, string> = {
+      Buy: 'Buy Property',
+      Sell: 'Sell Property',
+      Rent: 'Rent / Lease',
+      Investment: 'Capital Investment',
+    };
+    const reqDisplay = requirementLabels[reData.requirement] || reData.requirement;
+
+    const recipient = 'seikou.develops10@gmail.com';
+    const subject = 'New Real Estate Enquiry – SEIKOU DEVELOPS';
+
+    const body = `Dear SEIKOU DEVELOPS Team,
+
+I would like to submit a real estate enquiry.
+
+CUSTOMER DETAILS
+
+Full Name: ${reData.fullName.trim()}
+Phone Number: ${reData.phone.trim()}
+Email Address: ${reData.email.trim()}
+
+PROPERTY REQUIREMENTS
+
+Property Category: ${reData.propertyCategory}
+Requirement Type: ${reqDisplay}
+Preferred Location: ${reData.preferredLocation}
+Budget Range: ${reData.budgetRange.trim() ? reData.budgetRange.trim() : 'Not specified'}
+
+ADDITIONAL REQUIREMENTS
+
+Message: ${reData.message.trim() ? reData.message.trim() : 'None'}
+
+I agree to the processing of my contact details for consultation purposes in accordance with the Privacy Policy.
+
+Regards,
+${reData.fullName.trim()}`;
+
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+    const mailtoUrl = `mailto:${recipient}?subject=${encodedSubject}&body=${encodedBody}`;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      recipient
+    )}&su=${encodedSubject}&body=${encodedBody}`;
+
+    // 1. Direct synchronous trigger from user click gesture (NO async delay)
     try {
-      const res = await submitRealEstateInquiry(reData);
-      if (res.success) {
-        setReStatus({
-          type: 'success',
-          refId: res.id,
-          message: res.persistedToSupabase
-            ? 'Your real estate enquiry has been logged successfully in our system. Our advisor will reach out shortly.'
-            : 'Your enquiry has been received and logged locally. Our advisor will reach out shortly.',
-        });
-        setReData({
-          fullName: '',
-          phone: '',
-          email: '',
-          propertyCategory: 'Residential',
-          requirement: 'Buy',
-          preferredLocation: '',
-          budgetRange: '',
-          message: '',
-        });
+      window.location.href = mailtoUrl;
+    } catch (err) {
+      console.warn('Mailto invocation error:', err);
+    }
+
+    // 2. Set prepared draft state for UI feedback and fallback options
+    setPreparedEnquiry({
+      recipient,
+      subject,
+      body,
+      mailtoUrl,
+      gmailUrl,
+      senderName: reData.fullName.trim(),
+    });
+
+    // 3. Silently persist in background (non-blocking, zero await)
+    try {
+      submitRealEstateInquiry(reData).catch(() => {});
+    } catch {
+      // Non-blocking
+    }
+  };
+
+  const handleCopyEnquiry = async () => {
+    if (!preparedEnquiry) return;
+    try {
+      await navigator.clipboard.writeText(preparedEnquiry.body);
+      setCopiedText(true);
+      setTimeout(() => setCopiedText(false), 2500);
+    } catch {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = preparedEnquiry.body;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setCopiedText(true);
+        setTimeout(() => setCopiedText(false), 2500);
+      } catch (err) {
+        console.error('Failed to copy', err);
       }
-    } catch (err: any) {
-      setReStatus({
-        type: 'error',
-        message: err?.message || 'Submission encountered an issue. Please use our direct email or WhatsApp.',
-      });
-    } finally {
-      setIsSubmitting(false);
+    }
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('seikou.develops10@gmail.com');
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2500);
+    } catch {
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = 'seikou.develops10@gmail.com';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        setCopiedEmail(true);
+        setTimeout(() => setCopiedEmail(false), 2500);
+      } catch (err) {
+        console.error('Failed to copy email', err);
+      }
     }
   };
 
@@ -316,27 +412,147 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
             </div>
 
             {/* FORM A: REAL ESTATE */}
-            {activeForm === 're' && (
+            {activeForm === 're' && preparedEnquiry && (
+              <div className="space-y-5 animate-in fade-in duration-300">
+                <div className="p-6 sm:p-7 rounded-sm bg-[#121212] border border-[#D4AF37]/50 shadow-2xl relative overflow-hidden">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="p-3 rounded-sm bg-[#D4AF37]/10 text-[#D4AF37] border border-[#D4AF37]/30 shrink-0">
+                      <Mail className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-cinzel text-lg sm:text-xl font-bold text-white">
+                        Your Email Draft is Ready
+                      </h4>
+                      <p className="font-manrope text-xs sm:text-sm text-[#CCCCCC] mt-1.5 leading-relaxed">
+                        Your email draft is ready. Please review the details and press <span className="text-[#D4AF37] font-semibold">Send</span> in your email application to submit your enquiry to <strong className="text-white font-semibold">seikou.develops10@gmail.com</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Fallback actions & compose buttons */}
+                  <div className="pt-4 border-t border-neutral-800 space-y-3.5">
+                    <p className="font-space text-[11px] uppercase tracking-wider text-[#D4AF37] font-bold">
+                      Choose How to Dispatch Your Enquiry:
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {/* Open Gmail in New Tab */}
+                      <a
+                        href={preparedEnquiry.gmailUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-sm bg-[#ea4335] hover:bg-[#d93025] text-white font-space font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.99]"
+                      >
+                        <Mail className="w-4 h-4" />
+                        <span>Open Gmail</span>
+                        <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                      </a>
+
+                      {/* Open in Default Email Client */}
+                      <a
+                        href={preparedEnquiry.mailtoUrl}
+                        className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-sm bg-[#D4AF37] hover:bg-[#E8CB83] text-[#080808] font-space font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-[0.99]"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        <span>Open Default Email App</span>
+                      </a>
+                    </div>
+
+                    {/* Copy Enquiry Details Button */}
+                    <button
+                      type="button"
+                      onClick={handleCopyEnquiry}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-sm bg-[#1a1a1a] hover:bg-[#252525] border border-[#D4AF37]/40 text-white hover:text-[#D4AF37] font-space font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
+                    >
+                      {copiedText ? (
+                        <>
+                          <Check className="w-4 h-4 text-emerald-400" />
+                          <span className="text-emerald-300">Enquiry Details Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 text-[#D4AF37]" />
+                          <span>Copy Enquiry Details</span>
+                        </>
+                      )}
+                    </button>
+
+                    {/* Official Company Email Display */}
+                    <div className="mt-3.5 p-3.5 bg-[#080808] rounded-sm border border-neutral-800 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <span className="font-space text-[#777] block text-[10px] uppercase font-bold tracking-wider">
+                          Official Company Email
+                        </span>
+                        <span className="font-mono text-white text-xs select-all">
+                          seikou.develops10@gmail.com
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleCopyEmail}
+                        className="px-3 py-1.5 text-[11px] font-space uppercase tracking-wider rounded-sm bg-[#171717] hover:bg-[#222222] text-[#D4AF37] border border-[#D4AF37]/30 transition-colors cursor-pointer"
+                      >
+                        {copiedEmail ? 'Copied' : 'Copy Email Address'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Prepared Enquiry Preview */}
+                  <div className="mt-5 pt-4 border-t border-neutral-800/80">
+                    <span className="font-space text-[10px] text-[#888] uppercase tracking-wider block mb-2 font-bold">
+                      Prepared Enquiry Content:
+                    </span>
+                    <pre className="p-3.5 bg-[#080808] rounded-sm border border-neutral-800 text-[11px] text-[#CCCCCC] font-mono whitespace-pre-wrap max-h-52 overflow-y-auto leading-relaxed selection:bg-[#D4AF37]/30">
+                      {preparedEnquiry.body}
+                    </pre>
+                  </div>
+
+                  {/* Bottom Navigation */}
+                  <div className="mt-5 pt-3 border-t border-neutral-800 flex items-center justify-between">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreparedEnquiry(null);
+                        setCopiedText(false);
+                      }}
+                      className="inline-flex items-center gap-2 text-xs font-space text-[#B8B8B8] hover:text-[#D4AF37] transition-colors py-1 cursor-pointer font-semibold"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Edit Form Details</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPreparedEnquiry(null);
+                        setCopiedText(false);
+                        setReData({
+                          fullName: '',
+                          phone: '',
+                          email: '',
+                          propertyCategory: 'Residential Properties',
+                          requirement: 'Buy',
+                          preferredLocation: 'Bankura, West Bengal',
+                          budgetRange: '',
+                          message: '',
+                        });
+                      }}
+                      className="text-[11px] font-space text-[#666] hover:text-neutral-400 transition-colors py-1 cursor-pointer"
+                    >
+                      Reset Form
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* FORM A: REAL ESTATE (Active form when not showing fallback card) */}
+            {activeForm === 're' && !preparedEnquiry && (
               <form onSubmit={handleReSubmit} className="space-y-4 sm:space-y-5">
                 {reStatus.type === 'error' && (
                   <div className="p-4 rounded-sm bg-red-950/40 border border-red-500/50 text-red-200 text-xs sm:text-sm flex items-start gap-2.5">
                     <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                     <span className="font-manrope">{reStatus.message}</span>
-                  </div>
-                )}
-
-                {reStatus.type === 'success' && (
-                  <div className="p-4 rounded-sm bg-emerald-950/40 border border-emerald-500/50 text-emerald-200 text-xs sm:text-sm font-manrope">
-                    <div className="flex items-center gap-2 font-bold mb-1">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                      <span>Enquiry Successfully Registered</span>
-                    </div>
-                    <p>{reStatus.message}</p>
-                    {reStatus.refId && (
-                      <span className="block mt-2 font-space text-[11px] text-emerald-300">
-                        Reference ID: {reStatus.refId}
-                      </span>
-                    )}
                   </div>
                 )}
 
@@ -394,10 +610,13 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
                       onChange={(e) => setReData({ ...reData, propertyCategory: e.target.value as any })}
                       className="w-full px-4 py-3 rounded-sm bg-[#101010] border border-neutral-700 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none text-white text-sm font-manrope"
                     >
-                      <option value="Residential">Residential</option>
-                      <option value="Commercial">Commercial</option>
-                      <option value="Agricultural">Agricultural Land</option>
-                      <option value="Industrial">Industrial Land</option>
+                      <option value="Residential Properties">Residential Properties</option>
+                      <option value="Commercial Properties">Commercial Properties</option>
+                      <option value="Agricultural Land">Agricultural Land</option>
+                      <option value="Industrial Properties">Industrial Properties</option>
+                      <option value="Villas">Villas</option>
+                      <option value="Residential Plots">Residential Plots</option>
+                      <option value="Commercial Land">Commercial Land</option>
                     </select>
                   </div>
 
@@ -420,16 +639,21 @@ export const Contact: React.FC<ContactProps> = ({ onOpenPrivacyPolicy }) => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block font-space text-xs font-semibold uppercase tracking-wider text-[#B8B8B8] mb-1.5">
-                      Preferred Location
-                    </label>
-                    <input
-                      type="text"
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block font-space text-xs font-semibold uppercase tracking-wider text-[#B8B8B8]">
+                        Location (West Bengal)
+                      </label>
+                      <span className="font-space text-[10px] text-[#D4AF37]">WB Only</span>
+                    </div>
+                    <select
                       value={reData.preferredLocation}
                       onChange={(e) => setReData({ ...reData, preferredLocation: e.target.value })}
-                      placeholder="e.g. City Center / Sector 4"
                       className="w-full px-4 py-3 rounded-sm bg-[#101010] border border-neutral-700 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none text-white text-sm font-manrope"
-                    />
+                    >
+                      <option value="Bankura, West Bengal">Bankura, West Bengal</option>
+                      <option value="Durgapur, West Bengal">Durgapur, West Bengal</option>
+                      <option value="Other West Bengal">Other West Bengal Location</option>
+                    </select>
                   </div>
 
                   <div>

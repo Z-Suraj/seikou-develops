@@ -3,9 +3,9 @@ export interface RealEstateInquiry {
   fullName: string;
   phone: string;
   email: string;
-  propertyCategory: 'Residential' | 'Commercial' | 'Agricultural' | 'Industrial';
+  propertyCategory: 'Residential Properties' | 'Commercial Properties' | 'Agricultural Land' | 'Industrial Properties' | 'Villas' | 'Residential Plots' | 'Commercial Land';
   requirement: 'Buy' | 'Sell' | 'Rent' | 'Investment';
-  preferredLocation: string;
+  preferredLocation: 'Bankura, West Bengal' | 'Durgapur, West Bengal' | 'Other West Bengal' | string;
   budgetRange: string;
   message: string;
   createdAt: string;
@@ -30,8 +30,22 @@ export interface ProjectItem {
   category: 'Residential Developments' | 'Commercial Projects' | 'Turnkey Construction' | 'Architectural Planning' | 'Interior & Finishing';
   location: string;
   description: string;
-  completionStatus: 'Completed & Handed Over' | 'Under Execution' | 'Phase Delivery';
+  engineeringScope: string;
   image: string;
   highlights: string[];
-  isSampleDemonstration?: boolean;
+}
+
+export interface PropertyListing {
+  id: string;
+  title: string;
+  category: 'Residential Opportunities' | 'Commercial Opportunities' | 'Land & Plot Opportunities' | 'Residential Plots' | 'Commercial Land' | 'Agricultural Land' | 'Commercial Properties' | 'Villas';
+  location: 'Bankura, West Bengal' | 'Durgapur, West Bengal';
+  city: 'Bankura' | 'Durgapur';
+  intent: 'Buy' | 'Sell' | 'Investment';
+  price?: string;
+  size?: string;
+  description: string;
+  image: string;
+  advisoryType: string;
+  isAvailable: boolean;
 }

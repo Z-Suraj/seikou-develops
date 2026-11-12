@@ -19,11 +19,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenConsultation }) => {
 
   const navLinks = [
     { label: 'Home', href: '#home' },
+    { label: 'Founder', href: '#founder' },
     { label: 'About', href: '#about' },
-    { label: 'Expertise', href: '#expertise' },
-    { label: 'Real Estate', href: '#real-estate' },
+    { label: 'Properties', href: '#properties' },
     { label: 'Construction', href: '#construction' },
-    { label: 'Projects', href: '#projects' },
+    { label: 'Portfolio', href: '#projects' },
     { label: 'Contact', href: '#contact' },
   ];
 

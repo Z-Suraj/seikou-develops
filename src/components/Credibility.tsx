@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Award, Layers, Building2, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Award, Layers, Building2, MapPin } from 'lucide-react';
 
 export const Credibility: React.FC = () => {
   const credibilityItems = [
@@ -29,10 +29,10 @@ export const Credibility: React.FC = () => {
       description: 'Specialised execution capability adhering to rigorous civil engineering benchmarks.',
     },
     {
-      icon: CheckCircle2,
-      headline: 'DELIVERED',
-      title: 'Multiple Completed Projects',
-      description: 'Turnkey residential and commercial projects successfully completed and handed over to satisfied clients.',
+      icon: MapPin,
+      headline: 'WEST BENGAL',
+      title: 'Regional Focus',
+      description: 'Serving genuine real estate opportunities and turnkey construction across West Bengal.',
     },
   ];
 

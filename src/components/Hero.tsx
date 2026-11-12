@@ -13,7 +13,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreExpertise, onDiscussProject
 
   // Reliable, high-definition modern architectural high-rise aerial footage
   const videoUrl = 'https://assets.mixkit.co/videos/preview/mixkit-modern-city-buildings-and-high-rises-41584-large.mp4';
-  const fallbackPoster = '/src/assets/images/hero_modern_architecture_1794335445299.jpg';
+  const fallbackPoster = '/assets/images/hero_modern_architecture_1794335445299.jpg';
 
   return (
     <section

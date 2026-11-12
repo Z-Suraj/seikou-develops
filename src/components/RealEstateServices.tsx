@@ -129,7 +129,7 @@ export const RealEstateServices: React.FC<RealEstateServicesProps> = ({
         <div className="relative rounded-lg overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-[#101010]">
           <div className="absolute inset-0">
             <img
-              src="/src/assets/images/real_estate_luxury_property_1794335446043.jpg"
+              src="/assets/images/luxury_real_estate_banner_1794425271868.jpg"
               alt="Seikou Develops Real Estate Portfolio"
               className="w-full h-full object-cover object-center filter brightness-[0.45] contrast-[1.15]"
               referrerPolicy="no-referrer"
